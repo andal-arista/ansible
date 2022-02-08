@@ -1,0 +1,23 @@
+
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+  - name: Push all interface configurations
+    eos_config:
+      src: "{{lookup('env','PWD')}}/configs/{{inventory_hostname}}_interface.cfg"
+
+
+- hosts: spine
+  gather_facts: no
+  tasks:
+  - name: Push spine mlag configurations
+    eos_config:
+      src: "{{lookup('env','PWD')}}/configs/{{inventory_hostname}}_mlag.cfg"
+
+- hosts: leaf
+  gather_facts: no
+  tasks:
+  - name: Push leaf mlag configurations
+    eos_config:
+      src: "{{lookup('env','PWD')}}/configs/{{inventory_hostname}}_mlag.cfg"

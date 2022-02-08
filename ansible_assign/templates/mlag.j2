@@ -1,0 +1,11 @@
+{#for vmac#}
+{% if 'VARP' in ether[inventory_hostname]%}
+ip virtual-router mac-address {{ether[inventory_hostname]["VARP"]["mac_vir"]}}
+{%endif%}
+
+{#mlag conf#}
+mlag configuration
+domain-id {{ether[inventory_hostname]["MLAG"]["domain_id"]}}
+peer-address {{ether[inventory_hostname]["MLAG"]["peer_address"]}}
+local-interface vlan 4094
+peer-link port-channel 999

@@ -1,0 +1,39 @@
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+  - name: Register ethernet variables
+    include_vars: 
+      file: "{{lookup('env','PWD')}}/vars/interface.yml"
+      name: ether 
+  - name: Create templates
+    template: 
+      src: "{{lookup('env','PWD')}}/templates/interface.j2"
+      dest: "{{lookup('env','PWD')}}/configs/{{inventory_hostname}}_interface.cfg"
+
+
+- hosts: spine
+  gather_facts: no
+  tasks:
+  - name: Register ethernet variables
+    include_vars: 
+      file: "{{lookup('env','PWD')}}/vars/interface.yml"
+      name: ether
+  - name: Create templates
+    template: 
+      src: "{{lookup('env','PWD')}}/templates/mlag.j2"
+      dest: "{{lookup('env','PWD')}}/configs/{{inventory_hostname}}_mlag.cfg"
+
+- hosts: leaf
+  gather_facts: no
+  tasks:
+  - name: Register ethernet variables
+    include_vars: 
+      file: "{{lookup('env','PWD')}}/vars/interface.yml"
+      name: ether
+  - name: Create templates
+    template: 
+      src: "{{lookup('env','PWD')}}/templates/mlag.j2"
+      dest: "{{lookup('env','PWD')}}/configs/{{inventory_hostname}}_mlag.cfg"
+
+

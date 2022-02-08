@@ -1,0 +1,445 @@
+spine1:
+  interface:
+    #ethernet interface
+    ethernet1:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+    ethernet2:
+      description: to-leaf1
+      port_channel: yes
+      name: 122
+    ethernet3:
+      description: to-leaf2
+      port_channel: yes
+      name: 122
+    ethernet4:
+      description: to-leaf3
+      port_channel: yes
+      name: 344
+    ethernet5:
+      description: to-leaf4
+      port_channel: yes
+      name: 344
+    ethernet6:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+  svi:
+    vlan10:
+      ipv4: 10.50.10.252
+      mask: 24
+      ipv4_vir: 10.50.10.254      
+    vlan20:
+      ipv4: 10.50.20.252
+      mask: 24
+      ipv4_vir: 10.50.20.254
+    vlan4094:
+      ipv4: 10.0.0.4
+      mask: 31
+  vlans: 
+    vlan10:
+      id: 10
+    vlan20:
+      id: 20
+    vlan4094:
+      id: 4094
+      trunkgroup: mlagpeer1
+  portc:
+    port-channel999:
+      description: to-mlag-peer
+      mode: switchport
+      trunk: mode trunk
+      trunkgroup: mlagpeer1
+    port-channel122:
+      description: to-leaf12
+      mode: switchport
+      trunk: mode trunk
+      mlag: 1
+    port-channel344:
+      description: to-leaf34
+      mode: switchport
+      trunk: mode trunk
+      mlag: 2
+  VARP:
+    mac_vir: aaaa.aaaa.aaaa
+  MLAG:
+    peer_address: 10.0.0.5
+    domain_id: mlag1
+
+spine2:
+  interface:
+    #ethernet interface
+    ethernet1:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+    ethernet2:
+      description: to-leaf1
+      port_channel: yes
+      name: 122
+    ethernet3:
+      description: to-leaf2
+      port_channel: yes
+      name: 122
+    ethernet4:
+      description: to-leaf3
+      port_channel: yes
+      name: 344
+    ethernet5:
+      description: to-leaf4
+      port_channel: yes
+      name: 344
+    ethernet6:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+  vlans: 
+    vlan10:
+      id: 10
+    vlan20:
+      id: 20
+    vlan4094:
+      id: 4094
+      trunkgroup: mlagpeer1
+  svi:
+    vlan10:
+      ipv4: 10.50.10.253
+      mask: 24
+      ipv4_vir: 10.50.10.254
+    vlan20:
+      ipv4: 10.50.20.253
+      mask: 24
+      ipv4_vir: 10.50.20.254
+    vlan4094:
+      ipv4: 10.0.0.5
+      mask: 31
+  portc:
+    port-channel999:
+      description: to-mlag-peer
+      mode: switchport
+      trunk: mode trunk
+      trunkgroup: mlagpeer1
+    port-channel122:
+      description: to-leaf12
+      mode: switchport
+      trunk: mode trunk
+      mlag: 1
+    port-channel344:
+      description: to-leaf34
+      mode: switchport
+      trunk: mode trunk
+      mlag: 2
+  VARP:
+    mac_vir: aaaa.aaaa.aaaa
+  MLAG:
+    peer_address: 10.0.0.4
+    domain_id: mlag1
+    
+leaf1:
+  interface:
+    #ethernet interface
+    ethernet1:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+    ethernet2:
+      description: to-spine1
+      port_channel: yes
+      name: 122
+    ethernet3:
+      description: to-spine2
+      port_channel: yes
+      name: 122
+    ethernet4:
+      description: to-host
+      port_channel: yes
+      name: 12
+    ethernet5:
+      description: to-host
+      port_channel: yes
+      name: 12
+    ethernet6:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+  vlans: 
+    vlan10:
+      id: 10
+    vlan4094:
+      id: 4094
+      trunkgroup: mlagpeer2
+  svi:
+    vlan4094:
+      ipv4: 10.0.0.0
+      mask: 31
+    vlan10:
+      ipv4: 10.50.10.10
+      mask: 24
+      gateway: 10.50.10.254
+      dest: 10.50.20.0
+      dmask: 24
+  portc:
+    port-channel999:
+      description: to-mlag-peer
+      mode: switchport
+      trunk: mode trunk
+      trunkgroup: mlagpeer2
+    port-channel122:
+      description: to-spine12
+      mode: switchport
+      trunk: mode trunk
+      mlag: 1
+    port-channel12:
+      description: to-host
+      mode: switchport
+      trunk: mode trunk
+      mlag: 3  
+  MLAG:
+    peer_address: 10.0.0.1
+    domain_id: mlag2
+
+
+leaf2:
+  interface:
+  #ethernet interface
+    ethernet1:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+    ethernet2:
+      description: to-spine1
+      port_channel: yes
+      name: 122
+    ethernet3:
+      description: to-spine2
+      port_channel: yes
+      name: 122
+    ethernet4:
+      description: to-host
+      port_channel: yes
+      name: 12
+    ethernet5:
+      description: to-host
+      port_channel: yes
+      name: 12
+    ethernet6:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+  vlans: 
+    vlan10:
+      id: 10
+    vlan20:
+      id: 20
+    vlan4094:
+      id: 4094
+      trunkgroup: mlagpeer2
+  svi:
+    vlan4094:
+      ipv4: 10.0.0.1
+      mask: 31
+    vlan10:
+      ipv4: 10.50.10.20
+      mask: 24
+      gateway: 10.50.10.254
+      dest: 10.50.20.0
+      dmask: 24
+  portc:
+    port-channel999:
+      description: to-mlag-peer
+      mode: switchport
+      trunk: mode trunk
+      trunkgroup: mlagpeer2
+    port-channel122:
+      description: to-spine12
+      mode: switchport
+      trunk: mode trunk
+      mlag: 1
+    port-channel12:
+      description: to-host
+      mode: switchport
+      trunk: mode trunk
+      mlag: 3
+  MLAG:
+    peer_address: 10.0.0.0
+    domain_id: mlag2
+
+leaf3:
+  interface:
+    #ethernet interface
+    ethernet1:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+    ethernet2:
+      description: to-spine1
+      port_channel: yes
+      name: 344
+    ethernet3:
+      description: to-spine2
+      port_channel: yes
+      name: 344
+    ethernet4:
+      description: to-host
+      port_channel: yes
+      name: 12
+    ethernet5:
+      description: to-host
+      port_channel: yes
+      name: 12
+    ethernet6:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+  vlans: 
+    vlan10:
+      id: 10
+    vlan20:
+      id: 20
+    vlan4094:
+      id: 4094
+      trunkgroup: mlagpeer3
+  svi: 
+    vlan4094:
+      ipv4: 10.0.0.2
+      mask: 31
+    vlan10:
+      ipv4: 10.50.10.30
+      mask: 24
+    vlan20:
+      ipv4: 10.50.20.30
+      mask: 24
+  portc:
+    port-channel999:
+      description: to-mlag-peer
+      mode: switchport
+      trunk: mode trunk
+      trunkgroup: mlagpeer3
+    port-channel344:
+      description: to-spine12
+      mode: switchport
+      trunk: mode trunk
+      mlag: 2
+    port-channel12:
+      description: to-host2
+      mode: switchport
+      trunk: mode trunk
+      mlag: 3
+  MLAG:
+    peer_address: 10.0.0.3
+    domain_id: mlag3
+    
+leaf4:
+  interface:
+    #ethernet interface
+    ethernet1:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+    ethernet2:
+      description: to-spine1
+      port_channel: yes
+      name: 344
+    ethernet3:
+      description: to-spine2
+      port_channel: yes
+      name: 344
+    ethernet4:
+      description: to-host2
+      port_channel: yes
+      name: 12
+    ethernet5:
+      description: to-host2
+      port_channel: yes
+      name: 12
+    ethernet6:
+      description: to-mlag-peer
+      port_channel: yes
+      name: 999
+  vlans: 
+    vlan10:
+      id: 10
+    vlan20:
+      id: 20
+    vlan4094:
+      id: 4094
+      trunkgroup: mlagpeer3
+  svi:
+    vlan4094:
+      ipv4: 10.0.0.3
+      mask: 31
+    vlan10:
+      ipv4: 10.50.10.40
+      mask: 24
+    vlan20:
+      ipv4: 10.50.20.40
+      mask: 24
+  portc:
+    port-channel999:
+      description: to-mlag-peer
+      mode: switchport
+      trunk: mode trunk
+      trunkgroup: mlagpeer3
+    port-channel344:
+      description: to-spine12
+      mode: switchport
+      trunk: mode trunk
+      mlag: 2
+    port-channel12:
+      description: to-host2
+      mode: switchport
+      trunk: mode trunk
+      mlag: 3  
+  MLAG:
+    peer_address: 10.0.0.2
+    domain_id: mlag3
+
+host1:
+  interface:
+    ethernet1-4:
+      description: to-leaf12
+      port-channel: yes
+      name: 12
+  vlans: 
+    vlan10:
+      id: 10
+    vlan20:
+      id: 20
+  svi:
+    vlan10:
+      ipv4: 10.50.10.1
+      mask: 24
+      gateway: 10.50.10.10
+      gateway2: 10.50.10.20
+      dest: 10.50.20.0
+      dmask: 24
+  portc:
+    port-channel12:
+      description: to-leaf12
+      mode: switchport
+      trunk: mode trunk
+
+host2:
+  interface:
+    ethernet1-4:
+      description: to-leaf34
+      port-channel: yes
+      name: 12
+  vlans: 
+    vlan10:
+      id: 10
+    vlan20:
+      id: 20
+  svi:
+    vlan10:
+      ipv4: 10.50.10.2
+      mask: 24
+    vlan20:
+      ipv4: 10.50.20.2
+      mask: 24
+  portc:
+    port-channel12:
+      description: to-leaf34
+      mode: switchport
+      trunk: mode trunk
